@@ -1,0 +1,32 @@
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+
+
+
+
+
+  <h1>時給リアルタイム計算機</h1>
+
+  <div class="input-area" id="inputArea">
+    <label>給料合計（金額・円）：<input type="number" id="salary" placeholder="例：250000" /></label><br/>
+    <label>総労働時間（時間）：<input type="number" id="hours" placeholder="例：160" /></label><br/>
+    <button onclick="calculateHourlyWage()">時給を計算</button>
+    <button onclick="clearInputs()">入力内容をクリア</button>
+    </div>
+
+  <p id="hourlyWageDisplay"></p>
+
+<div class="button-area">
+  <button onclick="toggleTimer()" id="startStopBtn">スタート</button>
+  <button onclick="reset()">リセット</button>
+  <button onclick="toggleWageDisplay()" id="toggleWageBtn">時給を隠す</button>
+</div>
+
+
+  <div class="result">
+    現在の稼ぎ：<span id="moneyEarned">¥0</span>
+  </div>
+
+  <script src="script.js"></script>
