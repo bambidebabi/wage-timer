@@ -66,7 +66,11 @@ function reset() {
 
   // 清空显示内容
   document.getElementById("hourlyWageDisplay").innerText = "";
+
+  // ✅ 隐藏按钮区域
+  document.querySelector('.button-area').style.display = 'none';
 }
+
 
 function clearInputs() {
   document.getElementById("salary").value = "";
