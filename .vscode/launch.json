@@ -12,10 +12,4 @@
             "webRoot": "${workspaceFolder}"
         }
     ]
-    {
-  "compilerOptions": {
-    "lib": ["es2020", "dom"]
-  }
-}
-
 }
