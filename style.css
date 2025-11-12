@@ -191,3 +191,15 @@ body {
     animation: pixelShake 0.3s steps(2, end) infinite;
   }
 }
+.error-msg {
+  color: #e60012; /* 任天堂红 */
+  font-size: 12px;
+  margin-top: 4px;
+  font-family: 'DotGothic16', sans-serif;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-2px); }
+  to { opacity: 1; transform: translateY(0); }
+}

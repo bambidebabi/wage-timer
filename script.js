@@ -4,7 +4,7 @@ let startTime = null;
 let timer = null;
 let isRunning = false;
 
-function calculateHourlyWage() {
+/*function calculateHourlyWage() {
   const salary = parseFloat(document.getElementById("salary").value);
   const hours = parseFloat(document.getElementById("hours").value);
 
@@ -24,7 +24,62 @@ function calculateHourlyWage() {
     alert("有効な給料と労働時間を入力してください。");
   }
  
+}*/
+function calculateHourlyWage() {
+  const salaryInput = document.getElementById("salary");
+  const hoursInput = document.getElementById("hours");
+  const salary = parseFloat(salaryInput.value);
+  const hours = parseFloat(hoursInput.value);
+
+  // 先清除旧的错误提示
+  removeError(salaryInput);
+  removeError(hoursInput);
+
+  let valid = true;
+
+  if (!salary || salary <= 0) {
+    showError(salaryInput, "給料を正しく入力してください。");
+    valid = false;
+  }
+  if (!hours || hours <= 0) {
+    showError(hoursInput, "総労働時間を正しく入力してください。");
+    valid = false;
+  }
+
+  if (!valid) return; // 不继续执行
+
+  // ---- 以下是原有的逻辑 ----
+  hourlyWage = salary / hours;
+  document.getElementById("hourlyWageDisplay").innerText =
+    `あなたの時給は：¥${hourlyWage.toFixed(2)} / 時間です`;
+
+  const inputArea = document.getElementById("inputArea");
+  inputArea.classList.remove("fade-in");
+  inputArea.classList.add("fade-out");
+
+  document.querySelector('.button-area').style.display = 'block';
 }
+function showError(inputEl, message) {
+  // 若已存在，不重复添加
+  if (inputEl.nextElementSibling && inputEl.nextElementSibling.classList.contains("error-msg")) return;
+
+  const error = document.createElement("div");
+  error.className = "error-msg";
+  error.innerText = message;
+  error.style.color = "#e60012";   // 红白机红
+  error.style.fontSize = "12px";
+  error.style.marginTop = "4px";
+  error.style.fontFamily = "'DotGothic16', sans-serif";
+  inputEl.insertAdjacentElement("afterend", error);
+}
+
+function removeError(inputEl) {
+  const next = inputEl.nextElementSibling;
+  if (next && next.classList.contains("error-msg")) {
+    next.remove();
+  }
+}
+
 
 function toggleTimer() {
   if (hourlyWage <= 0) {
