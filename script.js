@@ -7,6 +7,20 @@ let isRunning = false;       // 是否计时中
 let startTime = null;        // 本次开始计时的时间戳（ms）
 let timerId = null;          // setInterval 句柄
 
+// 每满多少日元弹一次（可改为 50 / 200）
+const POP_STEP = 100;
+let lastPopBucket = 0;
+
+function triggerMoneyPop() {
+  const el = document.getElementById('moneyEarned');
+  if (!el) return;
+  // 先移除再强制回流，确保重复触发有效
+  el.classList.remove('money-pop');
+  // 强制回流：让浏览器“看到”类的移除
+  void el.offsetWidth;
+  el.classList.add('money-pop');
+}
+
 /** ① 金额格式化（默认 JPY，可后续做成可选） **/
 const fmt = new Intl.NumberFormat('ja-JP', {
   style: 'currency',
@@ -158,6 +172,16 @@ function updateMoneyEarnedDisplay() {
 }
 
 /** 以实际时间戳差值更新（比 Interval 更稳），并持久化 **/
+/*function tick(force = false) {
+  if (!isRunning || startTime == null) {
+    if (force) updateMoneyEarnedDisplay();
+    return;
+  }
+  const now = Date.now();
+  const elapsedSeconds = (now - startTime) / 1000;
+  totalEarned = (hourlyWage / 3600) * elapsedSeconds;
+  updateMoneyEarnedDisplay();
+}*/
 function tick(force = false) {
   if (!isRunning || startTime == null) {
     if (force) updateMoneyEarnedDisplay();
@@ -166,6 +190,14 @@ function tick(force = false) {
   const now = Date.now();
   const elapsedSeconds = (now - startTime) / 1000;
   totalEarned = (hourlyWage / 3600) * elapsedSeconds;
+
+  // —— 新增：按步进触发弹跳 ——
+  const bucket = Math.floor(totalEarned / POP_STEP);
+  if (bucket > lastPopBucket) {
+    lastPopBucket = bucket;
+    triggerMoneyPop();
+  }
+
   updateMoneyEarnedDisplay();
 }
 
