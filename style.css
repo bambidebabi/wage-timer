@@ -191,16 +191,3 @@ body {
     animation: pixelShake 0.3s steps(2, end) infinite;
   }
 }
-
-/* 金额小跳动：离散缩放，像素风 */
-@keyframes pixelPop {
-  0%   { transform: scale(1);   }
-  40%  { transform: scale(1.10); }
-  100% { transform: scale(1);   }
-}
-/* 应用类：短促、离散帧数 */
-.money-pop {
-  animation: pixelPop 220ms steps(6, end);
-  will-change: transform;
-  transform-origin: center;
-}
