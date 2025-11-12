@@ -172,16 +172,6 @@ function updateMoneyEarnedDisplay() {
 }
 
 /** 以实际时间戳差值更新（比 Interval 更稳），并持久化 **/
-/*function tick(force = false) {
-  if (!isRunning || startTime == null) {
-    if (force) updateMoneyEarnedDisplay();
-    return;
-  }
-  const now = Date.now();
-  const elapsedSeconds = (now - startTime) / 1000;
-  totalEarned = (hourlyWage / 3600) * elapsedSeconds;
-  updateMoneyEarnedDisplay();
-}*/
 function tick(force = false) {
   if (!isRunning || startTime == null) {
     if (force) updateMoneyEarnedDisplay();
@@ -190,16 +180,9 @@ function tick(force = false) {
   const now = Date.now();
   const elapsedSeconds = (now - startTime) / 1000;
   totalEarned = (hourlyWage / 3600) * elapsedSeconds;
-
-  // —— 新增：按步进触发弹跳 ——
-  const bucket = Math.floor(totalEarned / POP_STEP);
-  if (bucket > lastPopBucket) {
-    lastPopBucket = bucket;
-    triggerMoneyPop();
-  }
-
   updateMoneyEarnedDisplay();
 }
+
 
 function startTimerLoop() {
   if (timerId) return;
