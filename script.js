@@ -71,6 +71,7 @@ function showError(inputEl, message) {
   error.style.marginTop = "4px";
   error.style.fontFamily = "'DotGothic16', sans-serif";
   inputEl.insertAdjacentElement("afterend", error);
+  inputEl.classList.add("invalid");
 }
 
 function removeError(inputEl) {
@@ -78,6 +79,7 @@ function removeError(inputEl) {
   if (next && next.classList.contains("error-msg")) {
     next.remove();
   }
+  inputEl.classList.remove("invalid");
 }
 
 
@@ -105,6 +107,18 @@ function updateMoneyEarned() {
   const elapsedSeconds = (Date.now() - startTime) / 1000;
   totalEarned = hourlyWage / 3600 * elapsedSeconds;
   document.getElementById("moneyEarned").innerText = `¥${totalEarned.toFixed(2)}`;
+
+  const el = document.getElementById("moneyEarned");
+  el.classList.remove("money-pop");
+  void el.offsetWidth;          // 重新触发动画
+  el.classList.add("money-pop");
+
+const elapsed = Math.floor((Date.now() - startTime) / 1000);
+const h = String(Math.floor(elapsed / 3600)).padStart(2, '0');
+const m = String(Math.floor((elapsed % 3600) / 60)).padStart(2, '0');
+const s = String(elapsed % 60).padStart(2, '0');
+document.getElementById("elapsedTime").innerText = `⏱ ${h}:${m}:${s}`;
+
 }
 
 function reset() {
@@ -124,6 +138,9 @@ function reset() {
 
   // ✅ 隐藏按钮区域
   document.querySelector('.button-area').style.display = 'none';
+
+  document.getElementById("elapsedTime").innerText = "";
+
 }
 
 
@@ -132,7 +149,7 @@ function clearInputs() {
   document.getElementById("hours").value = "";
   document.getElementById("hourlyWageDisplay").innerText = "";
 }
-function toggleWageDisplay() {
+/*function toggleWageDisplay() {
   const display = document.getElementById("hourlyWageDisplay");
   const btn = document.getElementById("toggleWageBtn");
 
@@ -142,6 +159,32 @@ function toggleWageDisplay() {
   } else {
     display.classList.add("hidden");
     btn.innerText = "時給を表示する";
+  }*/
+  function toggleWageDisplay() {
+    const display = document.getElementById("hourlyWageDisplay");
+    const btn = document.getElementById("toggleWageBtn");
+
+    // 如果尚未有原始文本，先存下来
+    if (!display.dataset.originalText) {
+      display.dataset.originalText = display.innerText;
+    }
+
+    const isHidden = display.dataset.hidden === "true";
+
+    if (isHidden) {
+      // 还原显示
+      display.innerText = display.dataset.originalText;
+      btn.innerText = "時給を隠す";
+      display.dataset.hidden = "false";
+    } else {
+      // 隐藏金额部分，用 ****** 替代
+      const text = display.dataset.originalText;
+      const replaced = text.replace(/¥[0-9.,]+/, "¥******");
+      display.innerText = replaced;
+      btn.innerText = "時給を表示する";
+      display.dataset.hidden = "true";
+    }
   }
-}
+
+
 
